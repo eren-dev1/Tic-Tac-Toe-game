@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
   <meta name="theme-color" content="#3b82f6" />
   <meta name="description" content="Professional Tic-Tac-Toe game with AI, themes, statistics, and full customization" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Tic-Tac-Toe" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
   <title> Tic‑Tac‑Toe - Ultimate Edition</title>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -348,6 +353,14 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      /* Enhanced mobile touch targets */
+      min-height: 44px;
+      min-width: 44px;
+      /* Prevent tap highlighting and selection */
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
     .btn::before {
@@ -583,6 +596,19 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
       border: 2px solid transparent;
       overflow: hidden;
+      /* Enhanced touch target */
+      min-height: 44px;
+      min-width: 44px;
+      /* Prevent selection and zoom on mobile */
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      /* Prevent tap highlighting */
+      -webkit-tap-highlight-color: transparent;
+      /* Prevent long press context menu */
+      -webkit-touch-callout: none;
     }
 
     .cell::before {
@@ -737,7 +763,7 @@
       accent-color: var(--accent);
     }
 
-    /* Enhanced Responsive Design */
+    /* Enhanced Responsive Design for Mobile-First */
     @media (max-width: 1200px) {
       .container {
         grid-template-columns: 320px 1fr 280px;
@@ -774,6 +800,28 @@
 
       .board {
         width: clamp(280px, 60vw, 400px);
+      }
+    }
+
+    /* Tablet-specific optimizations */
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .container {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+          "game controls"
+          "game stats";
+      }
+
+      .game-area {
+        grid-area: game;
+      }
+
+      .controls {
+        grid-area: controls;
+      }
+
+      .stats-panel {
+        grid-area: stats;
       }
     }
 
@@ -906,6 +954,48 @@
         width: clamp(180px, 90vw, 240px);
         gap: 6px;
         padding: 8px;
+      }
+
+      .cell {
+        font-size: clamp(28px, 7vw, 32px);
+      }
+    }
+
+    /* Ultra-small screens */
+    @media (max-width: 320px) {
+      .top-bar {
+        padding: 4px 8px;
+      }
+
+      .brand-title {
+        font-size: 14px;
+      }
+
+      .panel {
+        padding: 8px;
+      }
+
+      .board {
+        width: clamp(160px, 95vw, 200px);
+        gap: 4px;
+        padding: 6px;
+      }
+
+      .cell {
+        font-size: clamp(24px, 6vw, 28px);
+        border-radius: 8px;
+      }
+
+      .btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        min-height: 40px;
+      }
+
+      .theme-toggle, .sound-toggle {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
       }
     }
 
@@ -1161,6 +1251,95 @@
 
     ::-webkit-scrollbar-thumb:hover {
       background: var(--text-secondary);
+    }
+
+    /* Touch-specific enhancements */
+    @media (pointer: coarse) {
+      .cell {
+        min-height: 48px;
+        min-width: 48px;
+      }
+
+      .btn {
+        min-height: 48px;
+        padding: 14px 24px;
+      }
+
+      .theme-toggle, .sound-toggle {
+        min-width: 48px;
+        min-height: 48px;
+      }
+
+      .checkbox-wrapper {
+        padding: 8px 4px;
+      }
+
+      .input {
+        min-height: 48px;
+        padding: 12px 16px;
+        font-size: 16px; /* Prevents zoom on iOS */
+      }
+    }
+
+    /* High DPI displays */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .cell {
+        border-width: 1px;
+      }
+
+      .btn {
+        border-width: 1px;
+      }
+    }
+
+    /* Reduced motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .cell:hover:not(.disabled) {
+        transform: none;
+      }
+
+      .btn:hover {
+        transform: none;
+      }
+    }
+
+    /* Dark mode preference */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0f172a;
+        --bg-secondary: #1e293b;
+        --card: #1e293b;
+        --card-hover: #334155;
+        --card-active: #475569;
+        --muted: #94a3b8;
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --text-tertiary: #64748b;
+        --accent: #60a5fa;
+        --accent-2: #818cf8;
+        --accent-light: #1e40af;
+        --accent-dark: #3b82f6;
+        --success: #34d399;
+        --success-light: #064e3b;
+        --warning: #fbbf24;
+        --warning-light: #451a03;
+        --danger: #f87171;
+        --danger-light: #450a0a;
+        --glass: rgba(255,255,255,0.05);
+        --glass-strong: rgba(255,255,255,0.1);
+        --win: linear-gradient(90deg, rgba(96,165,250,0.2), rgba(129,140,248,0.15));
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        --border: #334155;
+        --border-light: #475569;
+      }
     }
 
     /* Print styles */
@@ -1529,12 +1708,41 @@
         cell.setAttribute('data-index', i);
         cell.setAttribute('role', 'button');
         cell.setAttribute('aria-label', `Cell ${i + 1}, empty`);
+        
+        // Add both click and touch events for better mobile support
         cell.addEventListener('click', () => handleCellClick(i));
+        cell.addEventListener('touchstart', (e) => handleTouchStart(e, i), { passive: true });
+        cell.addEventListener('touchend', (e) => handleTouchEnd(e, i), { passive: true });
 
         const mark = document.createElement('span');
         mark.className = 'mark';
         cell.appendChild(mark);
         elements.board.appendChild(cell);
+      }
+    }
+
+    // Touch handling for mobile devices
+    let touchStartTime = 0;
+    let touchStartCell = null;
+
+    function handleTouchStart(e, cellIndex) {
+      touchStartTime = Date.now();
+      touchStartCell = cellIndex;
+      
+      // Add touch feedback
+      const cell = e.currentTarget;
+      cell.style.transform = 'scale(0.95)';
+    }
+
+    function handleTouchEnd(e, cellIndex) {
+      const cell = e.currentTarget;
+      cell.style.transform = '';
+      
+      // Only trigger if it's a quick tap on the same cell
+      const touchDuration = Date.now() - touchStartTime;
+      if (touchDuration < 300 && touchStartCell === cellIndex) {
+        e.preventDefault(); // Prevent double-tap zoom and click event
+        handleCellClick(cellIndex);
       }
     }
 
